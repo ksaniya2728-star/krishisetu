@@ -1,0 +1,78 @@
+# Dependencies
+node_modules/
+
+# Expo
+.expo/
+.expo-shared/
+dist/
+web-build/
+
+# React Native / Metro
+.metro-health-check*
+.metro-cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Build outputs
+build/
+coverage/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Android
+android/.gradle/
+android/app/build/
+android/build/
+*.keystore
+*.jks
+
+# iOS
+ios/build/
+ios/Pods/
+
+# Expo generated native folders (if using prebuild)
+android/
+ios/
+
+# MongoDB local files (if any)
+*.mongodb
+*.db
+
+# Secrets / keys
+*.pem
+*.key
+firebase-adminsdk.json
+serviceAccountKey.json
+google-services.json
+GoogleService-Info.plist
+
+# Cursor / AI editor files
+.cursor/
+.cursorignore
+
+# Misc
+*.bak
+*.old
