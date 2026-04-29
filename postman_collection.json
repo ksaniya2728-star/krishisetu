@@ -1,0 +1,79 @@
+{
+  "info": {
+    "name": "KrishiSetu API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Farmer Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Ramesh Kumar\",\n  \"phoneNumber\": \"9876543210\",\n  \"email\": \"ramesh@gmail.com\",\n  \"password\": \"123456\",\n  \"role\": \"farmer\",\n  \"farmName\": \"Green Acres\",\n  \"produceTypes\": [\"Tomatoes\", \"Potatoes\"]\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/auth/signup", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "signup"] }
+          }
+        },
+        {
+          "name": "Consumer Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Anita Desai\",\n  \"phoneNumber\": \"9876543211\",\n  \"email\": \"anita@gmail.com\",\n  \"password\": \"123456\",\n  \"role\": \"consumer\",\n  \"apartmentName\": \"Sunrise Towers\",\n  \"preferredDeliverySlot\": \"Morning\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/auth/signup", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "signup"] }
+          }
+        },
+        {
+          "name": "Distributor Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"Vijay Singh\",\n  \"phoneNumber\": \"9876543212\",\n  \"email\": \"vijay@gmail.com\",\n  \"password\": \"123456\",\n  \"role\": \"distributor\",\n  \"vehicleType\": \"auto\",\n  \"vehicleNumber\": \"MH12AB1234\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/auth/signup", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "signup"] }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneOrEmail\": \"9876543210\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/auth/login", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Get Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": { "raw": "http://localhost:5000/api/auth/profile", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "profile"] }
+          }
+        }
+      ]
+    }
+  ]
+}
