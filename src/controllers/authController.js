@@ -1,6 +1,6 @@
-const User = require('../models/User');
-const generateToken = require('../utils/generateToken');
-const { validatePhone, validateEmail, validatePassword } = require('../utils/validators');
+import User from '../models/User.js';
+import generateToken from '../utils/generateToken.js';
+import { validatePhone, validateEmail, validatePassword } from '../utils/validators.js';
 
 // @desc    Register a new user (Farmer, Consumer, Distributor)
 // @route   POST /api/auth/signup
@@ -66,11 +66,6 @@ const signup = async (req, res) => {
     throw new Error('User with this phone number or email already exists');
   }
 
-  // Role specific validation (Optional depending on business rules, here enforcing basics)
-  if (role === 'distributor' && (!vehicleType || !vehicleNumber)) {
-    res.status(400);
-    throw new Error('Vehicle type and number are required for distributor');
-  }
 
   // Create user
   const user = await User.create({
@@ -103,6 +98,7 @@ const signup = async (req, res) => {
         phoneNumber: user.phoneNumber,
         email: user.email,
         role: user.role,
+        onboardingCompleted: user.onboardingCompleted,
       },
     });
   } else {
@@ -140,6 +136,7 @@ const login = async (req, res) => {
         phoneNumber: user.phoneNumber,
         email: user.email,
         role: user.role,
+        onboardingCompleted: user.onboardingCompleted,
         profileImage: user.profileImage,
       },
     });
@@ -222,9 +219,109 @@ const updateProfile = async (req, res) => {
   }
 };
 
-module.exports = {
-  signup,
-  login,
-  getProfile,
-  updateProfile,
+// @desc    Logout user
+// @route   POST /api/auth/logout
+// @access  Private
+const logout = async (req, res) => {
+  // Since we are using stateless JWTs, client side must discard the token.
+  res.json({ message: 'Logged out successfully' });
 };
+
+// @desc    Onboarding completion
+// @route   PUT /api/auth/onboarding
+// @access  Private
+const onboarding = async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    if (user.role === 'farmer') {
+      user.farmName = req.body.farmName || user.farmName;
+      if (Array.isArray(req.body.produceTypes)) {
+        user.produceTypes = req.body.produceTypes;
+      } else if (typeof req.body.produceTypes === 'string') {
+        user.produceTypes = req.body.produceTypes
+          .split(',')
+          .map((s) => s.trim())
+          .filter(Boolean);
+      }
+      user.farmAddress = req.body.farmAddress || user.farmAddress;
+
+      if (req.body.landSize !== undefined) {
+        const n = Number(req.body.landSize);
+        user.landSize = Number.isFinite(n) ? n : user.landSize;
+      }
+      if (req.body.landUnit) {
+        user.landUnit = req.body.landUnit;
+      }
+
+      if (req.body.pickupAddress && typeof req.body.pickupAddress === 'object') {
+        user.pickupAddress = {
+          ...(user.pickupAddress || {}),
+          ...req.body.pickupAddress,
+        };
+      }
+
+      if (req.body.pickupLocation && typeof req.body.pickupLocation === 'object') {
+        const lat = req.body.pickupLocation.latitude;
+        const lng = req.body.pickupLocation.longitude;
+        user.pickupLocation = {
+          latitude: lat === null || lat === undefined ? user.pickupLocation?.latitude ?? null : Number(lat),
+          longitude: lng === null || lng === undefined ? user.pickupLocation?.longitude ?? null : Number(lng),
+        };
+      }
+    }
+
+    if (user.role === 'consumer') {
+      user.apartmentName = req.body.apartmentName || user.apartmentName;
+      user.preferredDeliverySlot = req.body.preferredDeliverySlot || user.preferredDeliverySlot;
+    }
+
+    if (user.role === 'distributor') {
+      if (!req.body.vehicleType && !user.vehicleType) {
+        res.status(400);
+        throw new Error('Vehicle type is required for onboarding');
+      }
+      if (!req.body.vehicleNumber && !user.vehicleNumber) {
+        res.status(400);
+        throw new Error('Vehicle number is required for onboarding');
+      }
+      user.vehicleType = req.body.vehicleType || user.vehicleType;
+      user.vehicleNumber = req.body.vehicleNumber || user.vehicleNumber;
+      user.licenseNumber = req.body.licenseNumber || user.licenseNumber;
+      if (req.body.availabilityStatus !== undefined) {
+        user.availabilityStatus = req.body.availabilityStatus;
+      }
+      user.deliveryRadiusKm = req.body.deliveryRadiusKm || user.deliveryRadiusKm;
+    }
+
+    // Safely construct location object
+    const location = req.body.location || {};
+    const safeLocation = {
+      village: location.village || "",
+      city: location.city || "",
+      state: location.state || "",
+      pincode: location.pincode || "",
+      coordinates: {
+        latitude: location.coordinates?.latitude ?? null,
+        longitude: location.coordinates?.longitude ?? null
+      }
+    };
+
+    user.location = safeLocation;
+
+    // Mark onboarding as completed (required by mobile client flow)
+    user.onboardingCompleted = true;
+
+    const updatedUser = await user.save();
+
+    res.json({
+      message: 'Onboarding completed successfully',
+      user: updatedUser,
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+};
+
+export { signup, login, getProfile, updateProfile, logout, onboarding };

@@ -1,6 +1,6 @@
 {
   "info": {
-    "name": "KrishiSetu API",
+    "name": "FarmBridge / KrishiSetu API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -8,43 +8,13 @@
       "name": "Auth",
       "item": [
         {
-          "name": "Farmer Signup",
+          "name": "Signup",
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"fullName\": \"Ramesh Kumar\",\n  \"phoneNumber\": \"9876543210\",\n  \"email\": \"ramesh@gmail.com\",\n  \"password\": \"123456\",\n  \"role\": \"farmer\",\n  \"farmName\": \"Green Acres\",\n  \"produceTypes\": [\"Tomatoes\", \"Potatoes\"]\n}"
-            },
-            "url": { "raw": "http://localhost:5000/api/auth/signup", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "signup"] }
-          }
-        },
-        {
-          "name": "Consumer Signup",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"fullName\": \"Anita Desai\",\n  \"phoneNumber\": \"9876543211\",\n  \"email\": \"anita@gmail.com\",\n  \"password\": \"123456\",\n  \"role\": \"consumer\",\n  \"apartmentName\": \"Sunrise Towers\",\n  \"preferredDeliverySlot\": \"Morning\"\n}"
-            },
-            "url": { "raw": "http://localhost:5000/api/auth/signup", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "signup"] }
-          }
-        },
-        {
-          "name": "Distributor Signup",
-          "request": {
-            "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"fullName\": \"Vijay Singh\",\n  \"phoneNumber\": \"9876543212\",\n  \"email\": \"vijay@gmail.com\",\n  \"password\": \"123456\",\n  \"role\": \"distributor\",\n  \"vehicleType\": \"auto\",\n  \"vehicleNumber\": \"MH12AB1234\"\n}"
+              "raw": "{\n  \"fullName\": \"Ramesh Kumar\",\n  \"phoneNumber\": \"9876543210\",\n  \"password\": \"123456\",\n  \"role\": \"farmer\"\n}"
             },
             "url": { "raw": "http://localhost:5000/api/auth/signup", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "signup"] }
           }
@@ -53,9 +23,7 @@
           "name": "Login",
           "request": {
             "method": "POST",
-            "header": [
-              { "key": "Content-Type", "value": "application/json" }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\n  \"phoneOrEmail\": \"9876543210\",\n  \"password\": \"123456\"\n}"
@@ -67,10 +35,121 @@
           "name": "Get Profile",
           "request": {
             "method": "GET",
-            "header": [
-              { "key": "Authorization", "value": "Bearer {{token}}" }
-            ],
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
             "url": { "raw": "http://localhost:5000/api/auth/profile", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "profile"] }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "http://localhost:5000/api/auth/logout", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "logout"] }
+          }
+        },
+        {
+          "name": "Onboarding",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"farmName\": \"Green Acres\",\n  \"produceTypes\": [\"Tomatoes\"]\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/auth/onboarding", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "onboarding"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Farmer",
+      "item": [
+        {
+          "name": "Add Produce",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productName\": \"Fresh Tomatoes\",\n  \"category\": \"Vegetables\",\n  \"pricePerKg\": 40,\n  \"stockQuantity\": 100,\n  \"harvestDate\": \"2023-11-01\",\n  \"location\": { \"type\": \"Point\", \"coordinates\": [77.5946, 12.9716] }\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/farmer/produce", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "farmer", "produce"] }
+          }
+        },
+        {
+          "name": "Get Orders",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "http://localhost:5000/api/farmer/orders", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "farmer", "orders"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Consumer",
+      "item": [
+        {
+          "name": "Nearby Produce",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "http://localhost:5000/api/consumer/nearby-produce?lat=12.9716&lng=77.5946&distanceKm=20", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "consumer", "nearby-produce"], "query": [{ "key": "lat", "value": "12.9716" }, { "key": "lng", "value": "77.5946" }, { "key": "distanceKm", "value": "20" }] }
+          }
+        },
+        {
+          "name": "Place Order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cartItems\": [\n    { \"produceId\": \"PRODUCE_ID_HERE\", \"quantity\": 5 }\n  ],\n  \"deliveryAddress\": \"123 Street\",\n  \"paymentMethod\": \"COD\",\n  \"deliverySlot\": \"Morning\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/consumer/place-order", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "consumer", "place-order"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Distributor",
+      "item": [
+        {
+          "name": "Get Deliveries",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "http://localhost:5000/api/distributor/deliveries", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "distributor", "deliveries"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Order History",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": { "raw": "http://localhost:5000/api/orders/history", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "orders", "history"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Maps",
+      "item": [
+        {
+          "name": "Distance",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sourceLat\": 12.9716,\n  \"sourceLng\": 77.5946,\n  \"destLat\": 13.0827,\n  \"destLng\": 80.2707\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/maps/distance", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "maps", "distance"] }
           }
         }
       ]

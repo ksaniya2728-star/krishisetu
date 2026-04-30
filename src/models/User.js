@@ -1,8 +1,15 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import { encrypt, decrypt } from '../utils/encryption.js';
 
 const userSchema = new mongoose.Schema(
   {
+    username: {
+      type: String,
+      unique: true,
+      sparse: true,
+      trim: true,
+    },
     fullName: {
       type: String,
       required: [true, 'Full name is required'],
@@ -13,6 +20,8 @@ const userSchema = new mongoose.Schema(
       required: [true, 'Phone number is required'],
       unique: true,
       trim: true,
+      set: encrypt,
+      get: decrypt,
     },
     email: {
       type: String,
@@ -31,24 +40,43 @@ const userSchema = new mongoose.Schema(
       enum: ['farmer', 'consumer', 'distributor'],
       required: [true, 'Role is required'],
     },
+    onboardingCompleted: {
+      type: Boolean,
+      default: false,
+    },
     location: {
-      village: String,
-      city: String,
-      state: String,
-      pincode: String,
-      coordinates: {
-        latitude: Number,
-        longitude: Number,
+      type: {
+        village: { type: String, default: "", set: encrypt, get: decrypt },
+        city: { type: String, default: "", set: encrypt, get: decrypt },
+        state: { type: String, default: "", set: encrypt, get: decrypt },
+        pincode: { type: String, default: "", set: encrypt, get: decrypt },
+        coordinates: {
+          latitude: { type: Number, default: null },
+          longitude: { type: Number, default: null }
+        }
       },
+      default: { village: "", city: "", state: "", pincode: "", coordinates: { latitude: null, longitude: null } }
     },
-    profileImage: {
-      type: String,
-    },
+    profileImage: { type: String },
     
     // Farmer specific fields
     farmName: String,
     produceTypes: [String],
-    farmAddress: String,
+    farmAddress: { type: String, set: encrypt, get: decrypt },
+    landSize: { type: Number, default: null, min: 0 },
+    landUnit: { type: String, enum: ['acres', 'hectares'], default: null },
+    pickupAddress: {
+      fullAddress: { type: String, default: '', set: encrypt, get: decrypt },
+      village: { type: String, default: '', set: encrypt, get: decrypt },
+      city: { type: String, default: '', set: encrypt, get: decrypt },
+      state: { type: String, default: '', set: encrypt, get: decrypt },
+      pincode: { type: String, default: '', set: encrypt, get: decrypt },
+      landmark: { type: String, default: '', set: encrypt, get: decrypt },
+    },
+    pickupLocation: {
+      latitude: { type: Number, default: null },
+      longitude: { type: Number, default: null },
+    },
 
     // Consumer specific fields
     apartmentName: String,
@@ -66,6 +94,12 @@ const userSchema = new mongoose.Schema(
       default: true,
     },
     deliveryRadiusKm: Number,
+    walletBalance: {
+      type: String,
+      default: encrypt('0'),
+      set: encrypt,
+      get: decrypt,
+    },
   },
   {
     timestamps: true,
@@ -91,12 +125,14 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// Exclude password from JSON output
-userSchema.methods.toJSON = function () {
-  const obj = this.toObject();
-  delete obj.password;
-  return obj;
-};
+// Exclude password and ensure getters run for JSON output
+userSchema.set('toJSON', { getters: true, transform: (doc, ret) => {
+  delete ret.password;
+  return ret;
+}});
+userSchema.set('toObject', { getters: true });
 
 const User = mongoose.model('User', userSchema);
-module.exports = User;
+
+export default User;
+

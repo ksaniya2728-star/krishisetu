@@ -12,8 +12,4 @@ const validatePassword = (password) => {
   return password && password.length >= 6;
 };
 
-module.exports = {
-  validatePhone,
-  validateEmail,
-  validatePassword,
-};
+export { validatePhone, validateEmail, validatePassword };
