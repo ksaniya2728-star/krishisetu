@@ -4,6 +4,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { FormInput } from '../../components/FormInput';
 import { PrimaryButton } from '../../components/buttons/PrimaryButton';
 import { useAuth } from '../../hooks/useAuth';
@@ -16,6 +17,7 @@ const schema = yup.object({
 
 export function LoginScreen() {
   const navigation = useNavigation<any>();
+  const { t } = useTranslation();
   const { login } = useAuth();
   const [submitting, setSubmitting] = useState(false);
 
@@ -36,7 +38,7 @@ export function LoginScreen() {
       setSubmitting(true);
       await login(values.phoneOrEmail, values.password);
     } catch (error: any) {
-      Alert.alert('Login failed', error?.response?.data?.message || 'Please try again.');
+      Alert.alert(t('common.error'), error?.response?.data?.message || 'Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -45,7 +47,7 @@ export function LoginScreen() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Text style={styles.kicker}>Fresh harvest marketplace</Text>
-      <Text style={styles.title}>Welcome back</Text>
+      <Text style={styles.title}>{t('auth.welcome')}</Text>
       <Text style={styles.subtitle}>Track produce, orders, delivery, and community baskets.</Text>
 
       <View style={styles.card}>
@@ -54,7 +56,7 @@ export function LoginScreen() {
           name="phoneOrEmail"
           render={({ field: { onChange, value } }) => (
             <FormInput
-              label="Email or phone"
+              label={t('auth.phone')}
               placeholder="Enter email or phone"
               value={value}
               onChangeText={onChange}
@@ -67,7 +69,7 @@ export function LoginScreen() {
           name="password"
           render={({ field: { onChange, value } }) => (
             <FormInput
-              label="Password"
+              label={t('auth.password')}
               placeholder="Enter password"
               value={value}
               onChangeText={onChange}
@@ -76,15 +78,16 @@ export function LoginScreen() {
             />
           )}
         />
-        <PrimaryButton title="Login" onPress={onSubmit} loading={submitting} />
+        <PrimaryButton title={t('auth.loginBtn')} onPress={onSubmit} loading={submitting} />
       </View>
 
       <Pressable onPress={() => navigation.navigate('Signup')}>
-        <Text style={styles.link}>New to KrishiSetu? Create account</Text>
+        <Text style={styles.link}>{t('auth.noAccount')} {t('auth.signup')}</Text>
       </Pressable>
     </ScrollView>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {

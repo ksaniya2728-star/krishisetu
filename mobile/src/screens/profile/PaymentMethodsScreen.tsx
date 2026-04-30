@@ -19,7 +19,7 @@ export function PaymentMethodsScreen() {
       setMethods(data.methods || []);
       setWalletBalance(data.walletBalance || '0');
     } catch (e: any) {
-      console.error('[PaymentMethods] fetch error:', e.config?.url, e.response?.status);
+      console.error("Payment Error:", e.response?.data || e.message);
     }
   }, []);
 
@@ -42,6 +42,7 @@ export function PaymentMethodsScreen() {
       setNewDetail('');
       await fetchMethods();
     } catch (e: any) {
+      console.error("Payment Error:", e.response?.data || e.message);
       Alert.alert('Error', e?.response?.data?.message || 'Failed to add method');
     }
   };
@@ -55,6 +56,7 @@ export function PaymentMethodsScreen() {
             await api.delete(`/payments/remove/${id}`);
             await fetchMethods();
           } catch (e: any) {
+            console.error("Payment Error:", e.response?.data || e.message);
             Alert.alert('Error', e?.response?.data?.message || 'Failed to remove');
           }
         }

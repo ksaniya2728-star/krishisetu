@@ -1,0 +1,61 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "remove": "Remove",
+    "edit": "Edit",
+    "back": "Back",
+    "loading": "Loading...",
+    "retry": "Retry",
+    "success": "Success",
+    "error": "Error"
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "welcome": "Welcome back",
+    "phone": "Phone Number",
+    "password": "Password",
+    "loginBtn": "Login",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?"
+  },
+  "dashboard": {
+    "home": "Home",
+    "orders": "Orders",
+    "cart": "Cart",
+    "profile": "Profile",
+    "map": "Map View",
+    "search": "Search vegetables, fruits, farms",
+    "freshToday": "Fresh Produce Today"
+  },
+  "cart": {
+    "title": "Your Cart",
+    "empty": "Your cart is empty",
+    "browse": "Browse Produce",
+    "summary": "Summary",
+    "subtotal": "Subtotal",
+    "delivery": "Delivery Fee",
+    "total": "Grand Total",
+    "checkout": "Proceed to Pay"
+  },
+  "orders": {
+    "title": "Your Orders",
+    "empty": "No orders yet",
+    "track": "Track Order",
+    "total": "Total Amount"
+  },
+  "profile": {
+    "title": "Profile",
+    "wallet": "Krishi Wallet Balance",
+    "addMoney": "Add Money",
+    "settings": "Account Settings",
+    "address": "Saved Addresses",
+    "payment": "Payment Methods",
+    "notifications": "Notifications",
+    "privacy": "Privacy & Security",
+    "logout": "Log out",
+    "language": "Language",
+    "chooseLanguage": "Choose Language"
+  }
+}

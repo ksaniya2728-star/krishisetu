@@ -2,6 +2,7 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { Alert, Pressable, RefreshControl, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { ProductCard } from '../../components/product/ProductCard';
 import { produceCategories } from '../../constants/mock';
 import { consumerService } from '../../services/consumerService';
@@ -11,6 +12,7 @@ import { colors, radii, spacing, shadows } from '../../theme';
 
 export function ConsumerHomeScreen() {
   const navigation = useNavigation<any>();
+  const { t } = useTranslation();
   const [produce, setProduce] = useState<any[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const { location, permissionStatus, loading: locationLoading, error: locationError, refresh: refreshLocation } =
@@ -44,7 +46,6 @@ export function ConsumerHomeScreen() {
 
   useEffect(() => {
     const unsubscribe = socketService.subscribe('produce:new', () => {
-      // Auto-refresh when new produce is added
       void loadData();
     });
     return unsubscribe;
@@ -57,9 +58,9 @@ export function ConsumerHomeScreen() {
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={loadData} />}
     >
       <Text style={styles.location}>Surat, Gujarat</Text>
-      <Text style={styles.title}>Fresh Produce Today</Text>
+      <Text style={styles.title}>{t('dashboard.freshToday')}</Text>
 
-      <TextInput style={styles.search} placeholder="Search vegetables, fruits, farms" placeholderTextColor={colors.muted} />
+      <TextInput style={styles.search} placeholder={t('dashboard.search')} placeholderTextColor={colors.muted} />
 
       <View style={styles.promo}>
         <View style={{ flex: 1, marginRight: spacing.md }}>
@@ -71,7 +72,7 @@ export function ConsumerHomeScreen() {
           onPress={() => navigation.navigate('NearbyFarmersMap')}
         >
           <Ionicons name="map" size={24} color={colors.primary} />
-          <Text style={styles.mapBtnText}>Map View</Text>
+          <Text style={styles.mapBtnText}>{t('dashboard.map')}</Text>
         </Pressable>
       </View>
       {permissionStatus === 'denied' ? (
@@ -104,9 +105,9 @@ export function ConsumerHomeScreen() {
           onAdd={async () => {
             try {
               await consumerService.addToCart(item._id, 1);
-              Alert.alert('Added', 'Item added to cart.');
+              Alert.alert(t('common.success'), 'Item added to cart.');
             } catch (e: any) {
-              Alert.alert('Unable to add', e?.response?.data?.message || 'Please try again.');
+              Alert.alert(t('common.error'), e?.response?.data?.message || 'Please try again.');
             }
           }}
         />
@@ -183,4 +184,5 @@ const styles = StyleSheet.create({
   basketText: { color: colors.primary, marginTop: 8 },
   locationHint: { color: colors.muted, marginBottom: spacing.md, textAlign: 'center' },
 });
+
 

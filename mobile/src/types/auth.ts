@@ -23,6 +23,7 @@ export interface User {
   licenseNumber?: string;
   availabilityStatus?: boolean;
   deliveryRadiusKm?: number;
+  walletBalance?: string;
 }
 
 export interface AuthResponse {
