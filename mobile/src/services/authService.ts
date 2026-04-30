@@ -45,5 +45,12 @@ export const authService = {
     const { data } = await api.put<{ message: string; user: User }>('/auth/profile', payload);
     return data;
   },
+
+  async searchUsers(query: string, role?: string) {
+    const { data } = await api.get<{ users: User[] }>('/auth/search', {
+      params: { query, role },
+    });
+    return data;
+  },
 };
 

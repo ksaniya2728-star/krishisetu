@@ -1,10 +1,14 @@
+import mongoose from 'mongoose';
 import Order from '../models/Order.js';
 
 // @desc    Track order status
 // @route   GET /api/orders/:orderId
 // @access  Private
 const trackOrder = async (req, res) => {
-  const order = await Order.findOne({ orderId: req.params.orderId })
+  const isObjectId = mongoose.Types.ObjectId.isValid(req.params.orderId);
+  const query = isObjectId ? { _id: req.params.orderId } : { orderId: req.params.orderId };
+
+  const order = await Order.findOne(query)
     .populate('consumerId', 'fullName phoneNumber')
     .populate('farmerId', 'fullName farmName phoneNumber')
     .populate('assignedDistributorId', 'fullName vehicleType vehicleNumber phoneNumber')

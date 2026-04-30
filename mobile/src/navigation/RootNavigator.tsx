@@ -72,9 +72,9 @@ function ConsumerTabs() {
         tabBarStyle: { height: 70, paddingBottom: 10, paddingTop: 10 },
         tabBarIcon: ({ color, size }) => {
           const iconMap: Record<string, keyof typeof Ionicons.glyphMap> = {
-            Home: 'home',
-            Cart: 'cart',
-            Orders: 'receipt',
+            ConsumerHome: 'home',
+            ConsumerCart: 'cart',
+            ConsumerOrders: 'receipt',
             Community: 'chatbubble-ellipses',
             ProfileTab: 'person',
           };
@@ -82,9 +82,9 @@ function ConsumerTabs() {
         },
       })}
     >
-      <Tab.Screen name="Home" component={ConsumerHomeScreen} />
-      <Tab.Screen name="Cart" component={ConsumerCartScreen} />
-      <Tab.Screen name="Orders" component={ConsumerOrdersScreen} />
+      <Tab.Screen name="ConsumerHome" component={ConsumerHomeScreen} options={{ title: 'Home' }} />
+      <Tab.Screen name="ConsumerCart" component={ConsumerCartScreen} options={{ title: 'Cart' }} />
+      <Tab.Screen name="ConsumerOrders" component={ConsumerOrdersScreen} options={{ title: 'Orders' }} />
       <Tab.Screen name="Community" component={CommunityScreen} />
       <Tab.Screen name="ProfileTab" component={ProfileScreen} options={{ title: 'Profile' }} />
     </Tab.Navigator>
@@ -118,9 +118,9 @@ function FarmerTabs() {
         tabBarStyle: { height: 70, paddingBottom: 10, paddingTop: 10 },
         tabBarIcon: ({ color, size }) => {
           const iconMap: Record<string, keyof typeof Ionicons.glyphMap> = {
-            Home: 'home',
+            FarmerHome: 'home',
             Add: 'add-circle',
-            Orders: 'receipt',
+            FarmerOrders: 'receipt',
             Community: 'chatbubble-ellipses',
             ProfileTab: 'person',
           };
@@ -128,9 +128,9 @@ function FarmerTabs() {
         },
       })}
     >
-      <Tab.Screen name="Home" component={FarmerDashboardScreen} />
+      <Tab.Screen name="FarmerHome" component={FarmerDashboardScreen} options={{ title: 'Home' }} />
       <Tab.Screen name="Add" component={AddProduceScreen} />
-      <Tab.Screen name="Orders" component={FarmerOrdersScreen} />
+      <Tab.Screen name="FarmerOrders" component={FarmerOrdersScreen} options={{ title: 'Orders' }} />
       <Tab.Screen name="Community" component={CommunityScreen} />
       <Tab.Screen name="ProfileTab" component={ProfileScreen} options={{ title: 'Profile' }} />
     </Tab.Navigator>
@@ -162,7 +162,7 @@ function DistributorTabs() {
         tabBarStyle: { height: 70, paddingBottom: 10, paddingTop: 10 },
         tabBarIcon: ({ color, size }) => {
           const iconMap: Record<string, keyof typeof Ionicons.glyphMap> = {
-            Home: 'home',
+            DistributorHome: 'home',
             Map: 'map',
             Deliveries: 'bicycle',
             ProfileTab: 'person',
@@ -171,7 +171,7 @@ function DistributorTabs() {
         },
       })}
     >
-      <Tab.Screen name="Home" component={DistributorHomeScreen} />
+      <Tab.Screen name="DistributorHome" component={DistributorHomeScreen} options={{ title: 'Home' }} />
       <Tab.Screen name="Map" component={DistributorMapScreen} />
       <Tab.Screen name="Deliveries" component={DistributorDeliveriesScreen} />
       <Tab.Screen name="ProfileTab" component={ProfileScreen} options={{ title: 'Profile' }} />

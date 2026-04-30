@@ -324,4 +324,28 @@ const onboarding = async (req, res) => {
   }
 };
 
-export { signup, login, getProfile, updateProfile, logout, onboarding };
+// @desc    Search users by name or username
+// @route   GET /api/auth/search?query=...
+// @access  Private
+const searchUsers = async (req, res) => {
+  const { query, role } = req.query;
+  
+  const filter = {};
+  if (query) {
+    filter.$or = [
+      { fullName: { $regex: query, $options: 'i' } },
+      { username: { $regex: query, $options: 'i' } }
+    ];
+  }
+  if (role) {
+    filter.role = role;
+  }
+
+  const users = await User.find(filter)
+    .select('fullName username profileImage role farmName')
+    .limit(10);
+
+  res.json({ users });
+};
+
+export { signup, login, getProfile, updateProfile, logout, onboarding, searchUsers };

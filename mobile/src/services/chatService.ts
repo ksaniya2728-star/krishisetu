@@ -1,18 +1,13 @@
 import { api } from './api';
 
 export const chatService = {
-  async history(userId: string) {
-    const { data } = await api.get(`/chat/history/${userId}`);
+  async history(username: string) {
+    const { data } = await api.get(`/chat/history/${username}`);
     return data;
   },
 
-  async send(toUserId: string, text: string) {
-    const { data } = await api.post('/chat/send', { toUserId, text });
-    return data;
-  },
-
-  async sendVoice(toUserId: string, voiceUrl: string, durationMs?: number) {
-    const { data } = await api.post('/chat/voice', { toUserId, voiceUrl, durationMs });
+  async send(toUsername: string, text: string, type: 'text' | 'voice' = 'text', voiceUrl?: string, durationMs?: number) {
+    const { data } = await api.post('/chat/send', { toUsername, text, type, voiceUrl, durationMs });
     return data;
   },
 };

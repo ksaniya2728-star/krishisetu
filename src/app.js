@@ -22,8 +22,8 @@ const app = express();
 
 // Middleware
 app.use(cors());
-app.use(json());
-app.use(urlencoded({ extended: true }));
+app.use(json({ limit: '50mb' }));
+app.use(urlencoded({ extended: true, limit: '50mb' }));
 
 // Routes
 app.get('/', (req, res) => {

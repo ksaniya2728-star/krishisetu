@@ -17,10 +17,7 @@ export const farmerService = {
   },
 
   async addProduce(payload: FormData | Record<string, unknown>) {
-    const isFormData = payload instanceof FormData;
-    const { data } = await api.post('/farmer/produce', payload, {
-      headers: isFormData ? { 'Content-Type': 'multipart/form-data' } : undefined,
-    });
+    const { data } = await api.post('/farmer/produce', payload);
     return data;
   },
 };

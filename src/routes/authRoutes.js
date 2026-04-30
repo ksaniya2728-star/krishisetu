@@ -1,5 +1,5 @@
 import express from 'express';
-import { signup, login, getProfile, updateProfile, logout, onboarding } from '../controllers/authController.js';
+import { signup, login, getProfile, updateProfile, logout, onboarding, searchUsers } from '../controllers/authController.js';
 import { protect } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -12,5 +12,7 @@ router.put('/onboarding', protect, onboarding);
 router.route('/profile')
   .get(protect, getProfile)
   .put(protect, updateProfile);
+
+router.get('/search', protect, searchUsers);
 
 export default router;
